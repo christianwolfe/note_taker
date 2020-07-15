@@ -25,10 +25,11 @@ app.get("/api/notes", (req, res) => {
 
 //post notes
 app.post("/api/notes", (req, res) => {
+    const noteBody = JSON.parse(fs.readFileSync("db/db.json"))
     const noteObj = req.body;
     noteObj.id = uuidv1();
     noteBody.push(noteObj);
-    fs.writeFileSync("db/db.js", JSON.stringify(noteBody))
+    fs.writeFileSync("db/db.json", JSON.stringify(noteBody))
     res.json(noteBody);
 });
 
@@ -38,7 +39,14 @@ app.post("/api/notes", function (req, res) {
     res.json(true);
 });
 
-//delete note
+//delete notes
+// app.delete("/api/notes", function (req, res) {
+
+//     //read file
+//     // probably parse response
+//     // ???
+
+// }
 
 
 //routes for HTML files
