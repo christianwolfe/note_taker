@@ -39,16 +39,17 @@ app.post("/api/notes", function (req, res) {
     res.json(true);
 });
 
-//delete notes
-// app.delete("/api/notes", function (req, res) {
-
-//     //read file
-//     // probably parse response
-//     // ???
-
-// }
-
-
+//delete notes by id
+app.delete("/api/notes/:id", function (req, res) {
+    //assign JSON parse of readFile to a var
+    const noteData = JSON.parse(fs.readFileSync("db/db.json"));
+    //filter by id
+    const newNotes = noteData.filter(function (noteObj) {
+        return noteObj.id !== req.params.id;
+    });
+    fs.writeFileSync("db/db.json", JSON.stringify(newNotes));
+    res.json(newNotes);
+});
 //routes for HTML files
 //get notes
 app.get("/notes", function (req, res) {
@@ -60,7 +61,7 @@ app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
-//not found
+//404
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "/public/index.html"));
 });
